@@ -7,8 +7,8 @@
 using namespace std;
 
 /* declare global variables to store the maximum length possible
- * of divisible subsets and 1 subset that has that length */
-int max_size = 0;
+ * of divisible subsets and 1 subset with that length */
+unsigned int max_size = 0;
 vector<int> ans;
 
 /* function converts vector into string for debugging purposes */
@@ -27,7 +27,7 @@ string vec_to_string(vector<int> v){
  * satisfy the “divisibility requirement” within a given set */
 vector<int> helper_function(vector<int> input, vector<int> subset, int idx){
 
-	for (int i = idx; i < input.size(); i++){	// initiate a for loop that starts from idx
+	for (unsigned int i = idx; i < input.size(); i++){	// initiate a for loop that starts from idx
 		
 		if (subset.empty() || input.at(i) % subset.back() == 0){	
 			subset.push_back(input.at(i));		// push new numbers into the subset if it's empty or is divisible by the last element of the most updated subset
@@ -35,6 +35,7 @@ vector<int> helper_function(vector<int> input, vector<int> subset, int idx){
 			if (max_size < subset.size()){
 				max_size = subset.size();		// update max_size if a larger subset's length is found
 				ans = subset;					// store that subset temporarily in ans
+				//cout << vec_to_string(ans) << endl; 
 			}
 			//cout << vec_to_string(subset) << endl; 
 			
