@@ -6,11 +6,6 @@
 
 using namespace std;
 
-/* declare global variables to store the maximum length possible
- * of divisible subsets and 1 subset with that length */
-unsigned int max_size = 0;
-vector<int> ans;
-
 /* function converts vector into string for debugging purposes */
 string vec_to_string(vector<int> v){
 	
@@ -27,47 +22,47 @@ string vec_to_string(vector<int> v){
 	return str;
 }
 
-/* a helper function that recursively generates subsets that  
- * satisfy the “divisibility requirement” within a given set */
-vector<int> helper_function(vector<int> input, vector<int> subset, int idx){
-
-	for (unsigned int i = idx; i < input.size(); i++){	// initiate a for loop that starts from idx
-		
-		if (subset.empty() || input.at(i) % subset.back() == 0){	
-			subset.push_back(input.at(i));		// push new numbers into the subset if it's empty or is divisible by the last element of the most updated subset
-			
-			if (max_size < subset.size()){
-				max_size = subset.size();		// update max_size if a larger subset's length is found
-				ans = subset;					// store that subset temporarily in ans
-				//cout << vec_to_string(ans) << endl; 
-			}
-			//cout << vec_to_string(subset) << endl; 
-			
-			helper_function(input, subset, i+1);	// call the recursive function to find if the last element of subset divides the next elements from the input
-			subset.pop_back();					// remove the last element of the subset if divisiblity not found
-		}	
-	}
-	return ans;
-} 
 
 vector<int> largest_divisible_pairs(vector<int> input){
 	
-	if (!ans.empty()){
-		ans.clear();
-		max_size = 0;
-	}
-	
 	vector<int> result;
+	int n = input.size();
 	sort(input.begin(), input.end());	// sort the entire set to examine divisility of the first number only once
 	
-	if (input.size() == 0){			// base case: return empty list
+	if (n == 0){			// base case: return empty list
 		return {};
-	} else if (input.size() == 1){			// base case: return original vector
+	} 
+	
+	if (n == 1){			// base case: return original vector
 		return input;
+	} 
+	
+	vector<int> counter(n,1);		// stores the max size of sublist containing each number, starts with 1 since each number is divisible by itself
+	vector<int> prev_idx(n,-1);		// stores the previous idx of the divisible number
+	int max_size = 0;		
+	int max_idx = -1;				// the idx of the number with the highest counter
+	
+	for (unsigned int i = 0; i < n; i++){		// make sure every possible options are examined to find the max_size
+		for (unsigned int j = i+1; j < n; j++){
+			if (input.at(j) % input.at(i) == 0 && counter.at(j) <= counter.at(i)){	// avoid double counts
+				counter.at(j) += 1;		// add 1 to the counter of that number if conditions satisfied
+				prev_idx.at(j) = i;		// store the idx of the number i divisible by j
+			}
+		} 
 		
-	} else {
-		return helper_function(input, result, 0);	// call helper function and get the subset with the largest length	
+		if (counter.at(i) > max_size){		// update max_size and max_idx when a larger length is found
+			max_size = counter.at(i);
+			max_idx = i;
+		}
 	}
+	
+	int cur_max_idx = max_idx;
+	while (cur_max_idx != -1){		// go through pre_idx to add numbers into result
+		result.push_back(input.at(cur_max_idx));
+		cur_max_idx = prev_idx.at(cur_max_idx);
+	}
+		
+	return result;
 } 
 
 
@@ -75,9 +70,8 @@ int main(){
 	
 	// given test case
 	vector<int> ex1 = {28, 22, 7, 2, 8, 14, 24, 56};
-	vector<int> ans1 = largest_divisible_pairs(ex1);
 	cout << "Input: " << vec_to_string(ex1) << endl;
-	cout << "Answer: " << vec_to_string(ans1) << endl;
+	cout << "Answer: " << vec_to_string(largest_divisible_pairs(ex1)) << endl;
 	
 	// random test case
 	vector<int> ex2 = {30, 6, 24, 4, 45, 9, 60};
@@ -97,6 +91,11 @@ int main(){
 	// test case with no input
 	vector<int> ex5 = {};
 	cout << "Input: " << vec_to_string(ex5) << endl;
-	cout << "Answer: " << vec_to_string(largest_divisible_pairs(ex5)) << endl;
+	cout << "Answer: " << vec_to_string(largest_divisible_pairs(ex5)) << endl; 
 
 }
+
+/* Time Complexity of 2 approaches:
+ * Recursion (part 1): O(2^n)
+ * Dynamic Programming (part 2): O(n^2)
+ */
