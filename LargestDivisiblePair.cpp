@@ -96,8 +96,8 @@ int main(){
 }
 
 /* Time Complexity of 2 approaches:
- * Recursion (part 1): O(2^n)
- * Dynamic Programming (part 2): O(n^2)
+ * Recursion (part 1): O(n^2)
+ * Dynamic Programming (part 2): O(n^2) [+ O(n) for the while loop]
  * This approach is dynamic programming since there is no recursion and therefore no repeated work done in recursion.
- * The algorithm breaks the problem into sub-problems and stores the results to avoid testing for divisibility again.
+ * The algorithm breaks the problem into sub-problems and stores the results to avoid testing for divisibility multiple times.
  */
