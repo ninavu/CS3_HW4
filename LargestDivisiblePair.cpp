@@ -14,6 +14,10 @@ vector<int> ans;
 /* function converts vector into string for debugging purposes */
 string vec_to_string(vector<int> v){
 	
+	if (v.empty()){
+		return {};
+	}
+	
 	string str = "[";
 	for (unsigned int i = 0; i < v.size()-1; i++){
 		str += to_string(v.at(i)) + ", ";
@@ -56,7 +60,9 @@ vector<int> largest_divisible_pairs(vector<int> input){
 	vector<int> result;
 	sort(input.begin(), input.end());	// sort the entire set to examine divisility of the first number only once
 	
-	if (input.size() <= 1){			// base case: return original vector
+	if (input.size() == 0){			// base case: return empty list
+		return {};
+	} else if (input.size() == 1){			// base case: return original vector
 		return input;
 		
 	} else {
@@ -74,7 +80,7 @@ int main(){
 	cout << "Answer: " << vec_to_string(ans1) << endl;
 	
 	// random test case
-	vector<int> ex2 = {30, 6, 24, 45, 5, 9, 60};
+	vector<int> ex2 = {30, 6, 24, 4, 45, 9, 60};
 	cout << "Input: " << vec_to_string(ex2) << endl;
 	cout << "Answer: " << vec_to_string(largest_divisible_pairs(ex2)) << endl;
 	
@@ -87,5 +93,10 @@ int main(){
 	vector<int> ex4 = {19, 10, 21, 75};
 	cout << "Input: " << vec_to_string(ex4) << endl;
 	cout << "Answer: " << vec_to_string(largest_divisible_pairs(ex4)) << endl;
+	
+	// test case with no input
+	vector<int> ex5 = {};
+	cout << "Input: " << vec_to_string(ex5) << endl;
+	cout << "Answer: " << vec_to_string(largest_divisible_pairs(ex5)) << endl;
 
 }
