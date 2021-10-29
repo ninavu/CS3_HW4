@@ -44,7 +44,7 @@ vector<int> largest_divisible_pairs(vector<int> input){
 	
 	for (unsigned int i = 0; i < n; i++){		// make sure every possible options are examined to find the max_size
 		for (unsigned int j = i+1; j < n; j++){
-			if (input.at(j) % input.at(i) == 0 && counter.at(j) <= counter.at(i)){	// avoid double counts
+			if (input.at(j) % input.at(i) == 0 && counter.at(j) <= counter.at(i)){	// avoid double max_size counts
 				counter.at(j) += 1;		// add 1 to the counter of that number if conditions satisfied
 				prev_idx.at(j) = i;		// store the idx of the number i divisible by j
 			}
@@ -98,4 +98,6 @@ int main(){
 /* Time Complexity of 2 approaches:
  * Recursion (part 1): O(2^n)
  * Dynamic Programming (part 2): O(n^2)
+ * This approach is dynamic programming since there is no recursion and therefore no repeated work done in recursion.
+ * The algorithm breaks the problem into sub-problems and stores the results to avoid testing for divisibility again.
  */
