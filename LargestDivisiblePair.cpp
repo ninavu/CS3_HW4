@@ -26,7 +26,7 @@ string vec_to_string(vector<int> v){
 vector<int> largest_divisible_pairs(vector<int> input){
 	
 	vector<int> result;
-	int n = input.size();
+	unsigned int n = input.size();
 	sort(input.begin(), input.end());	// sort the entire set to examine divisility of the first number only once
 	
 	if (n == 0){			// base case: return empty list
